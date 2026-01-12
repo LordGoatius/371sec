@@ -546,9 +546,104 @@ assert_eq!(*valref, 5)
 
 Invariants
 ---
+<!-- font_size: 2 -->
 
 A simple invariant you've probably experienced has to do with types. In safe Rust, you
 cannot assign a type an invalid value. The typechecker enforces this at compile time.
 
 However, the most important invariants that safe Rust upholds all have to do with "memory safety".
-This means that
+This means that there are things which can always be said to be true about a safe Rust program.
+
+Invariants EXIST IN OTHER LANGUAGES. They are just enforced by the programmer, not the compiler.
+This is why Rust is actually easier than C :)
+
+<!-- end_slide -->
+
+Unsafe
+---
+<!-- font_size: 2 -->
+
+Rust is actually 2 languages.
+
+One is safe. The other is not.
+
+You can opt into the unsafe version by using the `unsafe` keyword.
+
+```rust +exec
+# #![allow(clippy::all)]
+# fn main() {
+unsafe {
+  let ptr: *mut usize = 0x0usize as *mut usize;
+  *ptr = 12;
+}
+# }
+```
+
+This is not memory safe and crashes our program.
+
+<!-- end_slide -->
+
+Unsafe
+---
+
+We can also violate type safety.
+
+```rust +exec
+# #![allow(clippy::all)]
+# #![allow(unused)]
+# fn main() {
+#[repr(u8)]
+enum Vehicle {
+  Car = 0,
+  Plane = 1,
+}
+
+let vehicle: Vehicle = unsafe { std::mem::transmute(2u8) };
+# }
+```
+
+We crash here because this code is running in debug mode, but would not be enforced in a
+production environment. We have violated type safety.
+
+Notably, this is allowed *if* you maintain type safety.
+
+<!-- end_slide -->
+<!-- new_lines: 4 -->
+<!-- font_size: 4 -->
+Safe Unsafe
+---
+
+<!-- alignment: center -->
+GOTO Jimmy's Set Example
+
+<!-- end_slide -->
+Unsafe
+---
+
+<!-- font_size: 2 -->
+Unsafe can exist in a few contexts:
+
+Code Blocks
+<!-- font_size: 1 -->
+```rust
+unsafe {
+  std::mem::transmute(3);
+}
+```
+
+<!-- font_size: 2 -->
+Unsafe Functions
+<!-- font_size: 1 -->
+```rust
+unsafe fn myfn() { ... }
+```
+
+<!-- font_size: 2 -->
+Unsafe traits:
+<!-- font_size: 1 -->
+```rust
+unsafe trait MyTrait { .. }
+```
+
+<!-- font_size: 2 -->
+The last 2 mark something as unsafe to use, and the first gives you a context where you are allowed to use it.
