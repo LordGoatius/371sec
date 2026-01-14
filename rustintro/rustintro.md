@@ -349,7 +349,7 @@ This will be the starting point of our *new, better* foobar.
 ```rust +exec
 # fn main() {
 fn foobar(n: usize) {
-let range = 0..=n;
+let range = 1..=n;
 println!("{range:?}");
 }
 
@@ -369,7 +369,7 @@ This is part of Rust's principle of *zero-cost abstractions*, meaning that using
 ```rust +exec
 # fn main() {
 fn foobar(n: usize) {
-  (1..n).for_each(|val| {
+  (1..=n).for_each(|val| {
     println!("{val}");
   });
 }
@@ -421,7 +421,7 @@ fn test(val: Ty) -> Ty2 {
 <!-- font_size: 2 -->
 
 ```rust
-|val| {
+let test = |val| {
   ...
 }
 ```
@@ -508,6 +508,8 @@ Iterators in Rust can do a *lot* more than FooBar. I implemented `wc` in
 including multithreaded performance (`rayon` library in Rust).
 
 I've implemented things like ternary multiplication and division using only iterators.
+
+GOTO: Dice Example
 
 <!-- end_slide -->
 
@@ -647,3 +649,16 @@ unsafe trait MyTrait { .. }
 
 <!-- font_size: 2 -->
 The last 2 mark something as unsafe to use, and the first gives you a context where you are allowed to use it.
+
+<!-- end_slide -->
+
+Useful Tools
+===
+
+<!-- font_size: 2 -->
+- Cargo
+- Miri
+- Godbolt.org
+- Rust Playground
+- Rust Book
+- Rustonomicon
