@@ -284,7 +284,7 @@ Functional programming, while very different from what you may be used to, is wi
 be harder to write bugs in, especially when combined with a strict type system such as Rust's.
 
 <span style="color: blue">**IMPORTANT**</span>: Rust is *not* a functional programming language.
-It is, however, heavily inspired by them, and the presence of iterators are a big part of that.
+It is, however, heavily inspired by them, and the presence of iterators is a big part of that.
 
 Let's write some iterator style code.
 
@@ -349,8 +349,8 @@ This will be the starting point of our *new, better* foobar.
 ```rust +exec
 # fn main() {
 fn foobar(n: usize) {
-let range = 1..=n;
-println!("{range:?}");
+  let range = 1..=n;
+  println!("{range:?}");
 }
 
 foobar(5);
@@ -394,8 +394,8 @@ It allows creating a function inline, instead of giving it a name.
 
 ```rust +exec
 fn main() {
-  let lambda = |val| println!("{:?}", val);
-  lambda(5);
+  let print = |val| println!("{:?}", val);
+  print(5);
 }
 ```
 
@@ -503,13 +503,13 @@ Concluding FooBar and Iterators
 ===
 
 <!-- font_size: 2 -->
-Iterators in Rust can do a *lot* more than FooBar. I implemented `wc` in
+Iterators in Rust can do a *lot* more than FooBar. I implemented simple `wc` in
 5 lines of Rust code using them. They're worth learning, for many, many reasons,
 including multithreaded performance (`rayon` library in Rust).
 
 I've implemented things like ternary multiplication and division using only iterators.
 
-GOTO: Dice Example
+GOTO: Dice Example, WC example
 
 <!-- end_slide -->
 
@@ -552,6 +552,8 @@ Invariants
 
 A simple invariant you've probably experienced has to do with types. In safe Rust, you
 cannot assign a type an invalid value. The typechecker enforces this at compile time.
+*(Type safety can be viewed as a form of memory safety, as violating it can lead to
+memory corruption. Types are stored in memory after all)*
 
 However, the most important invariants that safe Rust upholds all have to do with "memory safety".
 This means that there are things which can always be said to be true about a safe Rust program.
@@ -652,13 +654,77 @@ The last 2 mark something as unsafe to use, and the first gives you a context wh
 
 <!-- end_slide -->
 
+Pointers
+---
+
+<!-- font_size: 2 -->
+The most important thing that Rust gives access to in `unsafe` is dereferencing raw pointers.
+A raw pointer `*mut T`/`*const T` is similar to a reference, except the compiler doesn't uphold any
+invariants about them, it simply assumes we do so.
+
+We can create them using this syntax, similarly to using references.
+```rust
+let val = 17;
+let ptr = &raw mut val;
+```
+
+Those familar with C will likely already be familar with these.
+
+<!-- end_slide -->
+
+Deref
+---
+<!-- font_size: 2 -->
+In Rust, the deref operator is `*`. It works on references, and can be overriden (safely) using the
+`Deref` trait.
+
+<!-- pause -->
+It is always safe to dereference a reference (`&`/`&mut`) because it will always be valid.
+It is never safe to dereference a pointer because its validity is determined by us, the programmer.
+
+<!-- pause -->
+This begs the question: Why use pointers and unsafe?
+
+<!-- pause -->
+A: If you're working on high-level applications you likely will never need unsafe. However:
+- It allows the programmer to (**<span style="color: red">CAREFULLY</span>**) optimize a program
+- It allows access to lower level abstractions necessary for working with hardware.
+- It allows access to directly working with other programming languages (FFI). (This is what I was paid to
+do at Cloudflare, and why I know so much about unsafe Rust)
+
+Some things are easier with unsafe! Many `std` data structures use it. But we *must* understand safe Rust's rules first.
+
+<!-- end_slide -->
+Quick Invariants:
+---
+
+<!-- font_size: 2 -->
+- A value in rust is always initalized when accessed
+- References `&` always point to valid memory
+- Slices `&[T]` always point to a finite length of a valid array of type `T`
+- A `&` and `&mut` never point to overlapping memory
+- A reference is always aligned to `size_of<usize>` bytes and points to aligned memory
+- Two `&mut` never point to overlapping memory
+- Memory pointed to by a `&` is never mutated
+- Unsafe compiler intrinsics are not called
+- A caught `panic!` results in a program with all other invariants upheld
+- The `!` (never) type is never constructed
+- `dyn Trait` pointer metadata is always the vtable for the trait
+
+All of these can be violated using `unsafe`. It is up to *us* to make sure they are not.
+
+*Disclaimer: This list is not comprehensive.
+
+Calvin will go over `unsafe` next week, and you will begin writing `unsafe` code.
+
+<!-- end_slide -->
 Useful Tools
 ===
 
 <!-- font_size: 2 -->
 - Cargo
 - Miri
-- Godbolt.org
+- Godbolt.org (compiler explorer)
 - Rust Playground
 - Rust Book
 - Rustonomicon
