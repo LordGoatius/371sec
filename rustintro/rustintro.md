@@ -511,6 +511,10 @@ I've implemented things like ternary multiplication and division using only iter
 
 GOTO: Dice Example, WC example
 
+<!-- pause -->
+(these examples might feel familiar if you've seen me or Calvin write python. In fact, this is because I'm doing the
+same style of programming in Python as in Rust, except Rust's style using methods makes it overall far more comprehensible)
+
 <!-- end_slide -->
 
 <!-- font_size: 2 -->
