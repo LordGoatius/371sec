@@ -14,10 +14,10 @@ Intro
 Q: So like, what is a kernel? Or like, an operating system? 
 <!-- pause -->
 
-A (mine, not the "correct one"):
+A: (mine, not the "correct one"):
 <!-- incremental_lists: true -->
-A kernel (usually):
-- Manages Memory [I lied about memory in previous presentations I'm sorry :( ]
+A kernel (usually [sometimes {in most common cases}]):
+- Manages Memory [I may have lied about memory in previous presentations I'm sorry :( ]
 - Manages Processes
 - Manages access to "operating system resources" (files, threads, streams of data)
 - Manages access to ***devices***
@@ -71,6 +71,7 @@ A UART (Universal Asynchronous Reciever/Transmitter) Device using MMIO
 ```rust
 pub struct Uart(&'static mut Registers);
 
+#[repr(C)]
 struct Registers {
     thr_rbr_dll: Register<ReadWrite, u8>,
     ier_dlh: Register<ReadWrite, u8>,
