@@ -1,3 +1,5 @@
 */exrust
 */rustex
 */**/target
+bare_metal/aarch64_obj
+bare_metal/x86_64_obj
