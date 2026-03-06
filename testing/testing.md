@@ -17,11 +17,13 @@ But anyways.
 <!-- pause -->
 <!-- font_size: 2 -->
 At some point in large projects, most code you write will be in a library.
-
+<!-- pause -->
+This is not a value statement.
+<!-- pause -->
 If you're using a languge with a built in testing framework, it's likely expected that
 you know how to use it. If you're not, I'm so sorry.
 
-#[cfg(test)] mod tests {}
+`#[cfg(test)] mod tests {}`
 ---
 <!-- font_size: 2 -->
 Assume we have some functions we want to test
@@ -209,4 +211,11 @@ you're writing on a bare-metal target on an unhosted system with a custom tester
 
 However, the idea is the same.
 
+CPU Execution
+---
+<!-- font_size: 2 -->
+I know you all were waiting for this, because this is so cool!
 
+Let's say we have a keyboard.
+It's MMIO. There's an address that represents the most recently pressed key.
+How do we read input from it?
